@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preface - HR Assistant</title>
+
+    <!-- n8n Chat Widget CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" />
+
+    <style>
+        /* CSS Reset & Body styling for full-page layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Container where n8n chat will render in fullscreen mode */
+        #n8n-chat-container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* 
+           @n8n/chat Theme CSS Variables Customization
+           Override default CSS variables to fit Preface brand styling.
+        */
+        :root {
+            /* Primary Theme Colors */
+            --chat--color--primary: #111827;              /* Primary dark theme color */
+            --chat--color--primary-shade-50: #1f2937;     /* Hover / active shade */
+            --chat--color--primary--shade-100: #374151;    /* Darker shade */
+            --chat--color--secondary: #4f46e5;            /* Secondary accent color */
+            --chat--color-secondary-shade-50: #4338ca;
+            
+            /* Base Colors */
+            --chat--color-white: #ffffff;
+            --chat--color-light: #f3f4f6;
+            --chat--color-light-shade-50: #e5e7eb;
+            --chat--color-dark: #111827;
+
+            /* Chat Typography & Layout Overrides */
+            --chat--window--height: 100vh;
+            --chat--window--width: 100vw;
+            --chat--border-radius: 0px;                    /* Flat borders for full-page view */
+            --chat--header--background: #ffffff;
+            --chat--header--color: #111827;
+            --chat--message--bot--background: #ffffff;
+            --chat--message--bot--color: #1f2937;
+            --chat--message--user--background: #111827;
+            --chat--message--user--color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Target element for n8n full-page chat -->
+    <div id="n8n-chat-container"></div>
+
+    <!-- Import and Initialize n8n Chat -->
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        // Initialize n8n Chat with all customizable parameters
+        createChat({
+            /* =========================================================================
+             * 1. CRITICAL CONFIGURATION
+             * ========================================================================= */
+            
+            // Your n8n Production Webhook URL (Replace with your actual endpoint)
+            webhookUrl: 'https://YOUR_N8N_INSTANCE_URL/webhook/YOUR_WEBHOOK_PATH',
+            
+            // Webhook Request Configuration
+            webhookConfig: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Example: 'Authorization': 'Bearer YOUR_TOKEN'
+                }
+            },
+
+            // Target HTML container element selector
+            target: '#n8n-chat-container',
+
+            // Render mode: 'fullscreen' for full-page layout, 'window' for embed floating widget
+            mode: 'fullscreen',
+
+            /* =========================================================================
+             * 2. STREAMING & PAYLOAD KEYS
+             * ========================================================================= */
+            
+            // Explicitly set streaming to false as requested
+            enableStreaming: false,
+
+            // Key name sent to n8n AI Agent node for the message text
+            chatInputKey: 'chatInput',
+
+            // Key name sent to n8n AI Memory node for session tracking
+            chatSessionKey: 'sessionId',
+
+            // Automatically load previous session chat history from n8n memory
+            loadPreviousSession: true,
+
+            // Additional metadata forwarded to the n8n execution context
+            metadata: {
+                department: 'Employee Query',
+                portal: 'Preface HR Assistant Web'
+            },
+
+            /* =========================================================================
+             * 3. UI & WELCOME SCREEN CONFIGURATION
+             * ========================================================================= */
+            
+            // Welcome Screen toggle (when set to true, displays welcome card/title before conversation starts)
+            showWelcomeScreen: false,
+
+            // Default interface language
+            defaultLanguage: 'en',
+
+            // Pre-loaded initial messages shown when starting a fresh session
+            initialMessages: [
+                'Welcome to Preface HR Assistant! 👋',
+                'I can assist you with HR policies, leave applications, company benefits, and employment guidelines. How can I help you today?'
+            ],
+
+            /* =========================================================================
+             * 4. FILE UPLOADS CONFIGURATION
+             * ========================================================================= */
+            
+            // Enable file uploads if employees need to submit documents/medical certs
+            allowFileUploads: false,
+
+            // Restrict file types allowed for upload (e.g., 'image/*,application/pdf')
+            allowedFilesMimeTypes: 'image/*,application/pdf',
+
+            /* =========================================================================
+             * 5. INTERNATIONALIZATION & CUSTOM TEXT (i18n)
+             * ========================================================================= */
+            i18n: {
+                en: {
+                    title: 'Preface HR Assistant',
+                    subtitle: 'Ask about company policies, leave, or benefits.',
+                    footer: 'Powered by Preface HR & n8n AI Engine',
+                    getStarted: 'Start New Conversation',
+                    inputPlaceholder: 'Type your HR policy question here...'
+                }
+            }
+        });
+    </script>
+</body>
+</html>
